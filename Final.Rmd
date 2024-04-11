@@ -28,8 +28,6 @@ perm_hk <- scanone(tt, chr=20,pheno.col = 2, method="hk")
 perm_mqm <- mqmscan(tt, pheno.col = 2)
 ```
 
-
-
 ```{r, warning=FALSE}
 im_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100)
 hk_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100, method="hk")
@@ -46,9 +44,6 @@ mqm_threshold_sub <- summary(mqmprocesspermutation(mqm_threshold_sub_perm), alph
 im_threshold_sub
 hk_threshold_sub
 mqm_threshold_sub
-```
-```{r}
-plot(perm_mqm)
 ```
 
 ```{r}
@@ -72,6 +67,8 @@ Same for interval mapping and harley knott
 
 ```{r}
 summary(perm_im) %>% arrange(desc(lod))
+summary(perm_hk) %>% arrange(desc(lod))
+summary(perm_mqm) %>% arrange(desc(`LOD GC.tumor`))
 ```
 
 ```{r}
@@ -105,10 +102,29 @@ find.marker(cross, chr=2, pos=80.0)
 
 ```{r}
 data <- read.csv('data/data.csv')
+head(data)
+
+data2 <- data %>%
+  select(-c('Mouse'))
 ```
 
 
+
+
+# MLR for Main Effects
 ```{r}
-model.test <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+D2MIT145 * D10MIT80 +D17MIT197 * D18MIT12, data=data)
-summary(model.test)
+me.fit <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292, data=data)
+summary(me.fit)
+```
+## Interaction
+```{r}
+full.fit <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+
+                   D2MIT145*D10MIT80+D17MIT197*D18MIT12, data=data)
+summary(full.fit)
+```
+
+## ANOVA
+```{r}
+anova <- aov(full.fit)
+summary(anova)
 ```
