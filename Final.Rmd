@@ -1,0 +1,114 @@
+---
+title: "Final"
+author: "Jessie Huang"
+date: "2024-04-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(qtl)
+library(tidyverse)
+```
+
+```{r}
+cross <- read.cross(format = "csv", file = 'data/data.csv', genotypes=c("S","H"))
+tt <- calc.genoprob(cross, step=1)
+mgenop <- calc.genoprob(cross, step=1)
+```
+
+```{r}
+nmissing(cross, what=c("ind","mar")) #there is 0 missing data, good for HK
+```
+
+
+```{r, warning=FALSE}
+perm_im <- scanone(tt, chr=20,pheno.col = 2)
+perm_hk <- scanone(tt, chr=20,pheno.col = 2, method="hk")
+perm_mqm <- mqmscan(tt, pheno.col = 2)
+```
+
+
+
+```{r, warning=FALSE}
+im_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100)
+hk_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100, method="hk")
+mqm_threshold_sub_perm <- mqmpermutation(cross,scanfunction=mqmscan, pheno.col=2,n.perm=100)
+```
+
+```{r}
+im_threshold_sub <- summary(im_threshold_sub_perm, alpha = c(0.05, 0.01))
+hk_threshold_sub <- summary(hk_threshold_sub_perm, alpha = c(0.05, 0.01))
+mqm_threshold_sub <- summary(mqmprocesspermutation(mqm_threshold_sub_perm), alpha = c(0.05, 0.01))
+```
+
+```{r}
+im_threshold_sub
+hk_threshold_sub
+mqm_threshold_sub
+```
+```{r}
+plot(perm_mqm)
+```
+
+```{r}
+plot(perm_im, perm_hk, perm_mqm, col=c("blue","orange", "green"), lty=1:3)
+abline(h=im_threshold_sub[1], col='blue', lty=1)
+abline(h=im_threshold_sub[2], col='blue', lty=2)
+abline(h=hk_threshold_sub[1], col='orange', lty=1)
+abline(h=hk_threshold_sub[2], col='orange', lty=2)
+abline(h=mqm_threshold_sub[1], col='green', lty=1)
+abline(h=mqm_threshold_sub[2], col='green', lty=2)
+legend("topright", cex=0.5,
+       c("IM - 0.05","IM - 0.01",
+         "HK - 0.05", "HK - 0.01",
+         "MQM - 0.05", "HK - 0.01"), 
+       col=c("blue","blue", "orange", "orange", "green", "green"), 
+       lty=c(1,2))
+```
+
+# Significant Markers
+Same for interval mapping and harley knott
+
+```{r}
+summary(perm_im) %>% arrange(desc(lod))
+```
+
+```{r}
+find.marker(cross, chr=1, pos=43.12)
+find.marker(cross, chr=4, pos=78.94)
+find.marker(cross, chr=13, pos=60.44)
+find.marker(cross, chr=2, pos=82.23)
+```
+
+```{r}
+summary(perm_hk) %>% arrange(desc(lod))
+```
+
+```{r}
+find.marker(cross, chr=1, pos=39.9)
+find.marker(cross, chr=4, pos=78.94)
+find.marker(cross, chr=13, pos=61.44)
+find.marker(cross, chr=2, pos=82.23)
+```
+
+```{r}
+summary(perm_mqm) %>% arrange(desc(`LOD GC.tumor`))
+```
+```{r}
+find.marker(cross, chr=1, pos=40.0)
+find.marker(cross, chr=4, pos=70.0)
+find.marker(cross, chr=13, pos=49.2)
+find.marker(cross, chr=2, pos=80.0)
+```
+# Multiple regression
+
+```{r}
+data <- read.csv('data/data.csv')
+```
+
+
+```{r}
+model.test <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+D2MIT145 * D10MIT80 +D17MIT197 * D18MIT12, data=data)
+summary(model.test)
+```
