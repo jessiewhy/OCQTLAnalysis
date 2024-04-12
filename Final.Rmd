@@ -113,18 +113,17 @@ data2 <- data %>%
 
 # MLR for Main Effects
 ```{r}
-me.fit <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292, data=data)
+me.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292, family=binomial, data=data)
 summary(me.fit)
 ```
 ## Interaction
 ```{r}
-full.fit <- lm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+
-                   D2MIT145*D10MIT80+D17MIT197*D18MIT12, data=data)
+full.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+
+                   D2MIT145*D10MIT80+D17MIT197*D18MIT12, family=binomial, data=data)
 summary(full.fit)
 ```
 
 ## ANOVA
 ```{r}
-anova <- aov(full.fit)
-summary(anova)
+drop1(aov(full.fit), .~., test='F')
 ```
