@@ -57,7 +57,7 @@ abline(h=mqm_threshold_sub[2], col='green', lty=2)
 legend("topright", cex=0.5,
        c("IM - 0.05","IM - 0.01",
          "HK - 0.05", "HK - 0.01",
-         "MQM - 0.05", "HK - 0.01"), 
+         "MQM - 0.05", "MQM - 0.01"), 
        col=c("blue","blue", "orange", "orange", "green", "green"), 
        lty=c(1,2))
 ```
