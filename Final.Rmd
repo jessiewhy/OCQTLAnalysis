@@ -23,13 +23,13 @@ nmissing(cross, what=c("ind","mar")) #there is 0 missing data, good for HK
 
 
 ```{r, warning=FALSE}
-perm_im <- scanone(tt, chr=20,pheno.col = 2)
+perm_im <- scanone(tt, chr=20,pheno.col = 2, method = "imp")
 perm_hk <- scanone(tt, chr=20,pheno.col = 2, method="hk")
 perm_mqm <- mqmscan(tt, pheno.col = 2)
 ```
 
 ```{r, warning=FALSE}
-im_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100)
+im_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100,  method = "imp")
 hk_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100, method="hk")
 mqm_threshold_sub_perm <- mqmpermutation(cross,scanfunction=mqmscan, pheno.col=2,n.perm=100)
 ```
