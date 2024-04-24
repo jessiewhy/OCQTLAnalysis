@@ -1,6 +1,6 @@
 ---
 title: "Final"
-author: "Jessie Huang"
+author: "Jessie Huang and Kaily Rosal"
 date: "2024-04-05"
 output: html_document
 ---
@@ -98,6 +98,9 @@ find.marker(cross, chr=4, pos=70.0)
 find.marker(cross, chr=13, pos=49.2)
 find.marker(cross, chr=2, pos=80.0)
 ```
+
+
+
 # Multiple regression
 
 ```{r}
@@ -116,6 +119,7 @@ data2 <- data %>%
 me.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292, family=binomial, data=data)
 summary(me.fit)
 ```
+
 ## Interaction
 ```{r}
 full.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+
@@ -126,4 +130,15 @@ summary(full.fit)
 ## ANOVA
 ```{r}
 drop1(aov(full.fit), .~., test='F')
+```
+
+## Effect plots
+
+```{r}
+effectplot(cross,pheno.col = 2, mname1="D1MIT215")
+effectplot(cross,pheno.col = 2, mname1="D2MIT145")
+effectplot(cross,pheno.col = 2, mname1="D4MIT232")
+effectplot(cross,pheno.col = 2, mname1="D13MIT292")
+effectplot(cross,pheno.col = 2, mname1="D2MIT145", mname2="D10MIT80")
+effectplot(cross,pheno.col = 2, mname1="D18MIT12", mname2="D17MIT197")
 ```
