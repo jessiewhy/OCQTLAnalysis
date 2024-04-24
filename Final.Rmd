@@ -12,9 +12,10 @@ library(tidyverse)
 ```
 
 ```{r}
-cross <- read.cross(format = "csv", file = 'data/data.csv', genotypes=c("S","H"))
+cross <- read.cross(format = "csv", file = 'Raw_data_project.csv', genotypes=c("S","H"))
 tt <- calc.genoprob(cross, step=1)
 mgenop <- calc.genoprob(cross, step=1)
+simgeno <- sim.geno(cross, step=1)
 ```
 
 ```{r}
@@ -104,7 +105,7 @@ find.marker(cross, chr=2, pos=80.0)
 # Multiple regression
 
 ```{r}
-data <- read.csv('data/data.csv')
+data <- read.csv('Raw_data_project.csv')
 head(data)
 
 data2 <- data %>%
