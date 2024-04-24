@@ -12,9 +12,10 @@ library(tidyverse)
 ```
 
 ```{r}
-cross <- read.cross(format = "csv", file = 'data/data.csv', genotypes=c("S","H"))
+cross <- read.cross(format = "csv", file = 'Raw_data_project.csv', genotypes=c("S","H"))
 tt <- calc.genoprob(cross, step=1)
 mgenop <- calc.genoprob(cross, step=1)
+simgeno <- sim.geno(cross, step=1)
 ```
 
 ```{r}
@@ -23,13 +24,13 @@ nmissing(cross, what=c("ind","mar")) #there is 0 missing data, good for HK
 
 
 ```{r, warning=FALSE}
-perm_im <- scanone(tt, chr=20,pheno.col = 2)
+perm_im <- scanone(simgeno, chr=20,pheno.col = 2, method = "imp")
 perm_hk <- scanone(tt, chr=20,pheno.col = 2, method="hk")
 perm_mqm <- mqmscan(tt, pheno.col = 2)
 ```
 
 ```{r, warning=FALSE}
-im_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100)
+im_threshold_sub_perm <- scanone(simgeno, chr=20,pheno.col = 2, n.perm = 100, method = "imp")
 hk_threshold_sub_perm <- scanone(tt, chr=20,pheno.col = 2, n.perm = 100, method="hk")
 mqm_threshold_sub_perm <- mqmpermutation(cross,scanfunction=mqmscan, pheno.col=2,n.perm=100)
 ```
@@ -104,7 +105,7 @@ find.marker(cross, chr=2, pos=80.0)
 # Multiple regression
 
 ```{r}
-data <- read.csv('data/data.csv')
+data <- read.csv('Raw_data_project.csv')
 head(data)
 
 data2 <- data %>%

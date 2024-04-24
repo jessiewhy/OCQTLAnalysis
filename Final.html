@@ -357,44 +357,26 @@ display: none;
 </div>
 
 
-<pre class="r"><code>cross &lt;- read.cross(format = &quot;csv&quot;, file = &#39;data/data.csv&#39;, genotypes=c(&quot;S&quot;,&quot;H&quot;))</code></pre>
+<pre class="r"><code>cross &lt;- read.cross(format = &quot;csv&quot;, file = &#39;Raw_data_project.csv&#39;, genotypes=c(&quot;S&quot;,&quot;H&quot;))</code></pre>
 <pre><code>##  --Read the following data:
 ##   162  individuals
 ##   81  markers
 ##   3  phenotypes
 ##  --Cross type: bc</code></pre>
 <pre class="r"><code>tt &lt;- calc.genoprob(cross, step=1)
-mgenop &lt;- calc.genoprob(cross, step=1)</code></pre>
+mgenop &lt;- calc.genoprob(cross, step=1)
+simgeno &lt;- sim.geno(cross, step=1)</code></pre>
 <pre class="r"><code>nmissing(cross, what=c(&quot;ind&quot;,&quot;mar&quot;)) #there is 0 missing data, good for HK</code></pre>
 <pre><code>##   [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ##  [38] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ##  [75] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ## [112] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ## [149] 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
-<pre class="r"><code>perm_im &lt;- scanone(tt, chr=20,pheno.col = 2)
+<pre class="r"><code>perm_im &lt;- scanone(simgeno, chr=20,pheno.col = 2, method = &quot;imp&quot;)
 perm_hk &lt;- scanone(tt, chr=20,pheno.col = 2, method=&quot;hk&quot;)
 perm_mqm &lt;- mqmscan(tt, pheno.col = 2)</code></pre>
-<pre class="r"><code>im_threshold_sub_perm &lt;- scanone(tt, chr=20,pheno.col = 2, n.perm = 100)</code></pre>
-<pre><code>## Permutation 5 
-## Permutation 10 
-## Permutation 15 
-## Permutation 20 
-## Permutation 25 
-## Permutation 30 
-## Permutation 35 
-## Permutation 40 
-## Permutation 45 
-## Permutation 50 
-## Permutation 55 
-## Permutation 60 
-## Permutation 65 
-## Permutation 70 
-## Permutation 75 
-## Permutation 80 
-## Permutation 85 
-## Permutation 90 
-## Permutation 95 
-## Permutation 100</code></pre>
+<pre class="r"><code>im_threshold_sub_perm &lt;- scanone(simgeno, chr=20,pheno.col = 2, n.perm = 100, method = &quot;imp&quot;)</code></pre>
+<pre><code>## Doing permutation in batch mode ...</code></pre>
 <pre class="r"><code>hk_threshold_sub_perm &lt;- scanone(tt, chr=20,pheno.col = 2, n.perm = 100, method=&quot;hk&quot;)</code></pre>
 <pre><code>## Doing permutation in batch mode ...</code></pre>
 <pre class="r"><code>mqm_threshold_sub_perm &lt;- mqmpermutation(cross,scanfunction=mqmscan, pheno.col=2,n.perm=100)</code></pre>
@@ -435,26 +417,26 @@ legend(&quot;topright&quot;, cex=0.5,
 <p>Same for interval mapping and harley knott</p>
 <pre class="r"><code>summary(perm_im) %&gt;% arrange(desc(lod))</code></pre>
 <pre><code>##           chr   pos   lod
-## c1.loc39    1 43.12 6.845
-## c4.loc72    4 78.94 5.226
-## c13.loc46  13 60.44 3.608
-## c2.loc80    2 82.23 3.046
-## c10.loc20  10 23.66 1.730
-## c3.loc15    3 25.82 1.292
-## D9MIT57     9  2.46 1.228
-## c16.loc10  16 30.26 0.949
-## D5Mit122    5 89.28 0.927
-## c14.loc8   14 28.88 0.693
+## c1.loc36    1 40.12 6.755
+## c4.loc71    4 77.94 5.221
+## c13.loc48  13 62.44 3.626
+## c2.loc80    2 82.23 3.077
+## c10.loc12  10 15.66 1.789
+## c3.loc18    3 28.82 1.325
+## c9.loc1     9  3.46 1.298
+## c16.loc12  16 32.26 1.109
+## c5.loc69    5 87.95 0.990
 ## D7Mit76     7  9.46 0.661
-## D8Mit92     8 74.62 0.658
-## D17MIT190  17 55.93 0.654
-## c18.loc9   18 28.29 0.413
-## c19.loc40  19 43.38 0.357
-## DXMit231    X 53.14 0.264
-## D15MIT213  15 29.44 0.197
-## D6Mit15     6 77.70 0.194
-## D11MIT77   11 10.44 0.194
-## c12.loc28  12 33.52 0.166</code></pre>
+## c14.loc10  14 30.88 0.660
+## c8.loc58    8 74.47 0.658
+## D17MIT190  17 55.93 0.655
+## c18.loc10  18 29.29 0.450
+## c19.loc41  19 44.38 0.394
+## c12.loc34  12 39.52 0.288
+## cX.loc14    X 51.25 0.273
+## c6.loc64    6 69.65 0.246
+## c11.loc1   11 11.44 0.219
+## D15MIT213  15 29.44 0.197</code></pre>
 <pre class="r"><code>summary(perm_hk) %&gt;% arrange(desc(lod))</code></pre>
 <pre><code>##           chr   pos   lod
 ## D1MIT215    1 39.91 6.705
@@ -568,7 +550,7 @@ legend(&quot;topright&quot;, cex=0.5,
 </div>
 <div id="multiple-regression" class="section level1">
 <h1>Multiple regression</h1>
-<pre class="r"><code>data &lt;- read.csv(&#39;data/data.csv&#39;)
+<pre class="r"><code>data &lt;- read.csv(&#39;Raw_data_project.csv&#39;)
 head(data)</code></pre>
 <pre><code>##   Sex GC.tumor Mouse D1MIT68 D1MIT5 D1MIT282  D1MIT7 D1MIT46 D1MIT215 D1MIT14
 ## 1  NA       NA    NA       1      1        1       1       1        1       1
@@ -652,10 +634,6 @@ summary(me.fit)</code></pre>
 ## glm(formula = GC.tumor ~ D1MIT215 + D2MIT145 + D4MIT232 + D13MIT292, 
 ##     family = binomial, data = data)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.2088  -0.6564   0.1502   0.7978   2.2348  
-## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
 ## (Intercept)  -4.8184     0.7850  -6.138 8.36e-10 ***
@@ -684,10 +662,6 @@ summary(full.fit)</code></pre>
 ## glm(formula = GC.tumor ~ D1MIT215 + D2MIT145 + D4MIT232 + D13MIT292 + 
 ##     D10MIT80 + D17MIT197 + D18MIT12 + D2MIT145 * D10MIT80 + D17MIT197 * 
 ##     D18MIT12, family = binomial, data = data)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.70235  -0.61396   0.06924   0.61614   2.32344  
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error z value Pr(&gt;|z|)    
