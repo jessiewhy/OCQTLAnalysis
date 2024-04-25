@@ -94,6 +94,7 @@ find.marker(cross, chr=2, pos=82.23)
 ```{r}
 summary(perm_mqm) %>% arrange(desc(`LOD GC.tumor`))
 ```
+
 ```{r}
 find.marker(cross, chr=1, pos=40.0)
 find.marker(cross, chr=4, pos=70.0)
@@ -101,28 +102,13 @@ find.marker(cross, chr=13, pos=49.2)
 find.marker(cross, chr=2, pos=80.0)
 ```
 
-
-
-# Multiple regression
+## MLR
 
 ```{r}
-data <- read.csv('Raw_data_project.csv')
+data <- read.csv('data/data.csv')
 head(data)
-
-data2 <- data %>%
-  select(-c('Mouse'))
 ```
 
-
-
-
-# MLR for Main Effects
-```{r}
-me.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292, family=binomial, data=data)
-summary(me.fit)
-```
-
-## Interaction
 ```{r}
 full.fit <- glm(GC.tumor ~ D1MIT215+D2MIT145+D4MIT232+D13MIT292+D10MIT80+D17MIT197+D18MIT12+
                    D2MIT145*D10MIT80+D17MIT197*D18MIT12, family=binomial, data=data)
