@@ -12,6 +12,7 @@ library(tidyverse)
 ```
 
 ```{r}
+set.seed(26)
 cross <- read.cross(format = "csv", file = 'data/data.csv', genotypes=c("S","H"))
 tt <- calc.genoprob(cross, step=1)
 mgenop <- calc.genoprob(cross, step=1)
