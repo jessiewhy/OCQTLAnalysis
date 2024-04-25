@@ -357,6 +357,7 @@ display: none;
 </div>
 
 
+
 <pre class="r"><code>set.seed(26)
 cross &lt;- read.cross(format = &quot;csv&quot;, file = &#39;data/data.csv&#39;, genotypes=c(&quot;S&quot;,&quot;H&quot;))</code></pre>
 <pre><code>##  --Read the following data:
@@ -365,7 +366,8 @@ cross &lt;- read.cross(format = &quot;csv&quot;, file = &#39;data/data.csv&#39;,
 ##   3  phenotypes
 ##  --Cross type: bc</code></pre>
 <pre class="r"><code>tt &lt;- calc.genoprob(cross, step=1)
-mgenop &lt;- calc.genoprob(cross, step=1)</code></pre>
+mgenop &lt;- calc.genoprob(cross, step=1)
+simgeno &lt;- sim.geno(cross, step=1)</code></pre>
 <pre class="r"><code>nmissing(cross, what=c(&quot;ind&quot;,&quot;mar&quot;)) #there is 0 missing data, good for HK</code></pre>
 <pre><code>##   [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ##  [38] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -550,7 +552,7 @@ legend(&quot;topright&quot;, cex=0.5,
 </div>
 <div id="multiple-regression" class="section level1">
 <h1>Multiple regression</h1>
-<pre class="r"><code>data &lt;- read.csv(&#39;data/data.csv&#39;)
+<pre class="r"><code>data &lt;- read.csv(&#39;Raw_data_project.csv&#39;)
 head(data)</code></pre>
 <pre><code>##   Sex GC.tumor Mouse D1MIT68 D1MIT5 D1MIT282  D1MIT7 D1MIT46 D1MIT215 D1MIT14
 ## 1  NA       NA    NA       1      1        1       1       1        1       1
@@ -634,10 +636,6 @@ summary(me.fit)</code></pre>
 ## glm(formula = GC.tumor ~ D1MIT215 + D2MIT145 + D4MIT232 + D13MIT292, 
 ##     family = binomial, data = data)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.2088  -0.6564   0.1502   0.7978   2.2348  
-## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
 ## (Intercept)  -4.8184     0.7850  -6.138 8.36e-10 ***
@@ -666,10 +664,6 @@ summary(full.fit)</code></pre>
 ## glm(formula = GC.tumor ~ D1MIT215 + D2MIT145 + D4MIT232 + D13MIT292 + 
 ##     D10MIT80 + D17MIT197 + D18MIT12 + D2MIT145 * D10MIT80 + D17MIT197 * 
 ##     D18MIT12, family = binomial, data = data)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.70235  -0.61396   0.06924   0.61614   2.32344  
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error z value Pr(&gt;|z|)    
