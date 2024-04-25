@@ -12,7 +12,8 @@ library(tidyverse)
 ```
 
 ```{r}
-cross <- read.cross(format = "csv", file = 'Raw_data_project.csv', genotypes=c("S","H"))
+set.seed(26)
+cross <- read.cross(format = "csv", file = 'data/data.csv', genotypes=c("S","H"))
 tt <- calc.genoprob(cross, step=1)
 mgenop <- calc.genoprob(cross, step=1)
 simgeno <- sim.geno(cross, step=1)
@@ -56,7 +57,7 @@ abline(h=hk_threshold_sub[2], col='orange', lty=2)
 abline(h=mqm_threshold_sub[1], col='green', lty=1)
 abline(h=mqm_threshold_sub[2], col='green', lty=2)
 legend("topright", cex=0.5,
-       c("IM - 0.05","IM - 0.01",
+       c("SC - 0.05","SC - 0.01",
          "HK - 0.05", "HK - 0.01",
          "MQM - 0.05", "MQM - 0.01"), 
        col=c("blue","blue", "orange", "orange", "green", "green"), 
@@ -140,6 +141,8 @@ effectplot(cross,pheno.col = 2, mname1="D1MIT215")
 effectplot(cross,pheno.col = 2, mname1="D2MIT145")
 effectplot(cross,pheno.col = 2, mname1="D4MIT232")
 effectplot(cross,pheno.col = 2, mname1="D13MIT292")
-effectplot(cross,pheno.col = 2, mname1="D2MIT145", mname2="D10MIT80")
-effectplot(cross,pheno.col = 2, mname1="D18MIT12", mname2="D17MIT197")
+effectplot(cross,pheno.col = 2, mname1="D2MIT145", mname2="D10MIT80", 
+           geno1=c('SS','SC'), geno2=c('SS','SC'))
+effectplot(cross,pheno.col = 2, mname1="D18MIT12", mname2="D17MIT197",
+           geno1=c('SS','SC'), geno2=c('SS','SC'))
 ```
